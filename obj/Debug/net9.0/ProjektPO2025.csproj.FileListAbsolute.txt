@@ -1,0 +1,15 @@
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ProjektPO2025.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ProjektPO2025.AssemblyInfoInputs.cache
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ProjektPO2025.AssemblyInfo.cs
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ProjektPO2025.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ProjektPO2025.sourcelink.json
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\bin\Debug\net9.0\ProjektPO2025.exe
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\bin\Debug\net9.0\ProjektPO2025.deps.json
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\bin\Debug\net9.0\ProjektPO2025.runtimeconfig.json
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\bin\Debug\net9.0\ProjektPO2025.dll
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\bin\Debug\net9.0\ProjektPO2025.pdb
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ProjektPO2025.dll
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\refint\ProjektPO2025.dll
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ProjektPO2025.pdb
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ProjektPO2025.genruntimeconfig.cache
+C:\Users\Admin\Desktop\po\final_project\github project\ProjektPO2025\obj\Debug\net9.0\ref\ProjektPO2025.dll
