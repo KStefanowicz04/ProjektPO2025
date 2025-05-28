@@ -7,3 +7,8 @@ public class Test1
         Console.WriteLine("Cześć z Plik1!");
     }
 }
+
+class Bike_Rent
+{
+    
+}
