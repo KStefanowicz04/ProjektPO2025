@@ -31,22 +31,22 @@ class User {
 
 class BikeRent {
     - rower: Bike
-    - startTime: string
-    - endTime: string
+    - startTime: DateTime
+    - endTime: DateTime
     - startStation: BikeStation
     - endStation: BikeStation
     - cost: double
 
-    + BikeRent()
+    + BikeRent(rower: Bike, startTime: DateTime, startStation: BikeStation)
     + GetBike(): Bike
     + GetStartTime(): string
-    + GetStartStation(): BikeStation
-    + SetEndTime(): void
-    + SetEndStation(): void
-    + SetCost(startTime: string, endTime: string, bikePrice: double): void
     + GetEndTime(): string
+    + SetEndTime(): void
+    + GetStartStation(): BikeStation
     + GetEndStation(): string
+    + SetEndStation(): void
     + GetCost(): double
+    + SetCost(startTime: string, endTime: string, bikePrice: double): void
     + ToString(): string
 }
 
