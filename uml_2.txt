@@ -79,8 +79,8 @@ abstract class Bike
     - price: double
 
     + Bike()
-    + GetPrice(): double
     + GetID(): int
+    + GetPrice(): double
 }
 
 class RegularBike
