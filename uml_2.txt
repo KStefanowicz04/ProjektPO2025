@@ -52,23 +52,27 @@ class BikeRent {
 
 class StationsAggregation
 {
-    - Stations: BikeStation[]
+    - stations: List<BikeStation>
 
     + StationsAggregation()
+    + AddStation(newStation: BikeStation): void
+    + RemoveStation(removedStation: BikeStation): void
     + GetStationsInfo(): void
 } 
 
 class BikeStation
 {
     - name: string
-    - allBikes: Bike[]
+    - allBikes: List<Bike>
     - totalSlots: int
     - freeSlots: int
 
     + BikeStation(name: string, totalSlots: int)
-    + GetRegular(): Bike
-    + GetTandem(): Bike
-    + GetChild(): Bike
+    + AddBike(newBike: Bike): void
+    + RemoveBike(removedBike: Bike): void
+    + GetRegular(): List<Bike>
+    + GetChild(): List<Bike>
+    + GetTandem(): List<Bike>
     + GetFreeSlots(): bool
     + ToString(): string
 }
@@ -78,7 +82,7 @@ abstract class Bike
     - id: int
     - price: double
 
-    + Bike()
+    + Bike(price: double)
     + GetID(): int
     + GetPrice(): double
 }
@@ -88,7 +92,7 @@ class RegularBike
     - id: int
     - price: double
 
-    + RegularBike()
+    + RegularBike(price: double)
     + GetPrice(): double
     + GetID(): int
 }
@@ -97,7 +101,7 @@ class ChildBike
     - id: int
     - price: double
 
-    +ChildBike()
+    +ChildBike(price: double)
     + GetPrice(): double
     + GetID(): int
 }
@@ -106,7 +110,7 @@ class TandemBike
     - id: int
     - price: double
 
-    TandemBike()
+    TandemBike(price: double)
     + GetPrice(): double
     + GetID(): int
 }

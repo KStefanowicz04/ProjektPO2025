@@ -70,7 +70,26 @@ class Program
         // Usuwa podaną stację z listy stacji
         public void RemoveStation(BikeStation removedStation)
         {
-            stations.Remove(newStation);
+            stations.Remove(removedStation);
+        }
+
+        // Wypisuje informacje o stacjach w liście stacji
+        public void GetStationsInfo()
+        {
+            // Jeśli w agregatorze nie ma żadnych stacji...
+            if (stations.Count <= 0)
+            {
+                Console.WriteLine("W agregatorze nie ma żadnych stacji!");
+                return;
+            }
+
+            // W przeciwnym wypadku...
+            Console.WriteLine("Informacje o stacjach w tym agregatorze stacji:");
+            foreach (BikeStation station in stations)
+            {
+                Console.WriteLine(station.ToString());
+            }
+            
         }
     }
 
@@ -200,6 +219,12 @@ class Program
         stacja.GetTandem();
         Console.WriteLine("Free: " + stacja.FreeSlots);
 
-        Console.WriteLine(stacja.ToString());
+        //Console.WriteLine(stacja.ToString());
+
+        StationsAggregation agregatorStacji = new StationsAggregation();
+        agregatorStacji.AddStation(stacja);
+        agregatorStacji.GetStationsInfo();
+        agregatorStacji.RemoveStation(stacja);
+        agregatorStacji.GetStationsInfo();
     }
 }
