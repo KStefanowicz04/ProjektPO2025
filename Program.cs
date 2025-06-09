@@ -226,5 +226,63 @@ class Program
         agregatorStacji.GetStationsInfo();
         agregatorStacji.RemoveStation(stacja);
         agregatorStacji.GetStationsInfo();
+
+
+
+
+        // Menu główne
+        while (true)
+        {
+            Console.WriteLine("Wybierz operację:");
+            Console.WriteLine("1: Zaloguj się\n2: Wyloguj się\n3: Zarejestruj się\n4: Wypożycz rower\n5: Historia użytkownika\n" +
+                "6: Lista wypożyczalni rowerów\n7: Lista rowerów w danej wypożyczalni\n8: Zakończ program");
+
+            string command = Console.ReadLine();
+
+
+            switch (command)
+            {
+                case "1":  // Logowanie
+
+                    break;
+
+                case "2":  // Wylogowanie
+
+                    break;
+
+                case "3":  // Rejestracja
+
+                    break;
+
+                case "4":  // Wypożycz rower
+
+                    break;
+
+                case "5":  // Historia użytkownika
+
+                    break;
+
+                case "6":  // Lista wypożyczalni rowerów
+
+                    break;
+
+                case "7":  // Lista rowerów dostępnych w wypożyczalni
+
+                    break;
+
+                case "8":  // Koniec programu
+                    return;
+
+                default:
+                    Console.WriteLine("BŁĄD! Wybierz poprawną operację!");
+                    break;
+            }
+
+        }
+
+
+
+
+
     }
 }
