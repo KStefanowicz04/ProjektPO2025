@@ -200,7 +200,7 @@ class Program
         // Pola
         //
         // Rower dowolnego rodzaju
-        Bike bicycle = new Bike;
+        Bike bicycle;
         public Bike Bicycle   // getter
         {
             get { return bicycle; }
@@ -229,8 +229,8 @@ class Program
         }
 
         // Stacja końcowa wypożyczenia, ustawiana przy oddaniu rowera
-        BikeStation endStation;
-        public BikeStation EndStation  // getter, setter
+        BikeStation? endStation;
+        public BikeStation? EndStation  // getter, setter
         {
             get { return endStation; }
             set { endStation = value; }
@@ -244,16 +244,26 @@ class Program
             get { return cost; }
         }
 
+
         // Konstruktor
-        public BikeRent() { }
+        public BikeRent(Bike bicycle, DateTime startTime, BikeStation startStation)
+        {
+            this.bicycle = bicycle;
+            this.startTime = startTime;
+            this.startStation = startStation;
+        }
+
 
         // Metody
         //
         // Ustawienie ceny wypożyczenia roweru
-        public void SetCost(string startTime, string endTime, double bikePrice)
+        public void SetCost(double bikePrice)
         {
+            TimeSpan span = endTime - startTime;  // Czas od początku do końca wypożyczenia roweru.
+            double totalTime = span.TotalMinutes;
             // Cena = cena roweru + czas wypożyczenia, gdzie każda minuta kosztuje 2 grosze
-            cost = bikePrice + (endTime - startTime) * 0.02;
+            cost = bikePrice + (totalTime * 0.02);
+            
         }
 
         // Zwraca string z informacjami o wypożyczeniu - informacje o rowerze, długość czasu wypożyczenia, stacja początkowa, stacja końcowa (jeśli jest)
