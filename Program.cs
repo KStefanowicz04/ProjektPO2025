@@ -647,11 +647,21 @@ public abstract class Bike
                     break;
 
                 case "6":  // Lista wypożyczalni rowerów
-
+                    agregatorStacji.GetStationsInfo();
                     break;
 
                 case "7":  // Lista rowerów dostępnych w wypożyczalni
-
+                    Console.WriteLine("Podaj nazwę wypożyczalni rowerów");
+                    input = Console.ReadLine();
+                    BikeStation bikestacja= agregatorStacji.getStation(input);
+                    if (bikestacja != null)
+                    {
+                        Console.WriteLine(bikestacja.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("Błędna nazwa stacji");
+                    }
                     break;
                 case "8": //Zwróc rower
                     Console.WriteLine("Podaj nr ID roweru");
