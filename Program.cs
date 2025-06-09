@@ -50,7 +50,7 @@ class User
                 DateTime dataa;
                 if (DateTime.TryParse(Start_time, out dataa))
                 {
-                    
+
                 }
                 else
                 {
@@ -559,15 +559,19 @@ public abstract class Bike
         agregatorStacji.RemoveStation(stacja);
         agregatorStacji.GetStationsInfo();
 
+        Users_Manager manago = new Users_Manager();
 
-
+        string im, na, nr, ma,input,nazwa_stacji,czass;
+        double cash;
+        int idd;
+        User currentt = null;
 
         // Menu główne
         while (true)
         {
             Console.WriteLine("Wybierz operację:");
-            Console.WriteLine("1: Zaloguj się\n2: Wyloguj się\n3: Zarejestruj się\n4: Wypożycz rower\n5: Historia użytkownika\n" +
-                "6: Lista wypożyczalni rowerów\n7: Lista rowerów w danej wypożyczalni\n8: Zakończ program");
+            Console.WriteLine("1: Zaloguj się\n2: Wyloguj się\n3: Zarejestruj się\n4: Wypożycz rower\n5: Historia wypożyczeń użytkownika\n" +
+                "6: Lista wypożyczalni rowerów\n7: Lista rowerów w danej wypożyczalni\n8: Zwróć rower \n9: Dodaj pieniądze na konto\n10: Aktywne wypożyczenia\n11: Zakończ program");
 
             string command = Console.ReadLine();
 
@@ -575,23 +579,71 @@ public abstract class Bike
             switch (command)
             {
                 case "1":  // Logowanie
-
+                    Console.WriteLine("Podaj imię");
+                    im = Console.ReadLine();
+                    Console.WriteLine("Podaj nazwisko");
+                    na = Console.ReadLine();
+                    Console.WriteLine("Podaj numer telefonu");
+                    nr = Console.ReadLine();
+                    Console.WriteLine("Podaj mail");
+                    ma = Console.ReadLine();
+                    manago.Login(im, na, nr, ma);
                     break;
 
                 case "2":  // Wylogowanie
-
+                    manago.Logout();
                     break;
 
                 case "3":  // Rejestracja
+                    Console.WriteLine("Podaj imię");
+                    im = Console.ReadLine();
+                    Console.WriteLine("Podaj nazwisko");
+                    na = Console.ReadLine();
+                    Console.WriteLine("Podaj numer telefonu");
+                    nr = Console.ReadLine();
+                    Console.WriteLine("Podaj mail");
+                    ma = Console.ReadLine();
+                    Console.WriteLine("Jeśli chcesz, podaj sumę, którą chcesz wpłacić");
+                    input = Console.ReadLine();
+                    if (double.TryParse(input, out cash))
+                    {
 
+                    }
+                    else
+                    {
+                        Console.WriteLine("Błędny format liczby!");
+                        break;
+                    }
+                    manago.Register(im, na, nr, ma, cash);
                     break;
 
                 case "4":  // Wypożycz rower
+                           //public void Rent(int Bike_id, string Station_name, string Start_time)
+                    Console.WriteLine("Podaj nr ID roweru");
+                    input = Console.ReadLine();
+                    if (int.TryParse(input, out idd))
+                    {
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Błędnie wpisany numer ID");
+                        break;
+                    }
+                    Console.WriteLine("Podaj nazwę stacji");
+                    nazwa_stacji = Console.ReadLine();
+                    Console.WriteLine("Podaj czas w formacie DateTime");
+                    //ewentualnie tu można zrobić DateTime.Now
+                    czass = Console.ReadLine();
+                    currentt = manago.getCurrentUser();
+                    currentt.Rent(idd, nazwa_stacji, czass);
+                    
 
                     break;
 
-                case "5":  // Historia użytkownika
-
+                case "5":  // Historia wypożyczeń użytkownika
+                    currentt = manago.getCurrentUser();
+                    currentt.Display_Rent_History();
                     break;
 
                 case "6":  // Lista wypożyczalni rowerów
@@ -601,8 +653,47 @@ public abstract class Bike
                 case "7":  // Lista rowerów dostępnych w wypożyczalni
 
                     break;
+                case "8": //Zwróc rower
+                    Console.WriteLine("Podaj nr ID roweru");
+                    input = Console.ReadLine();
+                    if (int.TryParse(input, out idd))
+                    {
 
-                case "8":  // Koniec programu
+                    }
+                    else
+                    {
+                        Console.WriteLine("Błędnie wpisany numer ID");
+                        break;
+                    }
+                    Console.WriteLine("Podaj nazwę stacji");
+                    nazwa_stacji = Console.ReadLine();
+                    Console.WriteLine("Podaj czas w formacie DateTime");
+                    //ewentualnie tu można zrobić DateTime.Now
+                    czass = Console.ReadLine();
+                    currentt = manago.getCurrentUser();
+                    currentt.Return_Bike(idd, nazwa_stacji, czass);
+                    break;
+                case "9": //Dodaj pieniadze na konto
+                    currentt = manago.getCurrentUser();
+                    Console.WriteLine("Podaj kwotę");
+                    input = Console.ReadLine();
+                    if (double.TryParse(input, out cash))
+                    {
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Błędnie wpisana kwota");
+                        break;
+                    }
+                    currentt.Deposit(cash);
+                    break;
+                case "10": //Aktywne wypożyczenia użytkownika
+                currentt = manago.getCurrentUser();
+                    currentt.Display_Rent_Active();
+                    break;
+
+                case "11":  // Koniec programu
                     return;
 
                 default:
