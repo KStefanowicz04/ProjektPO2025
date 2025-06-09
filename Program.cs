@@ -194,6 +194,83 @@ class Program
         }
     }
 
+    // Wypożyczenie roweru
+    public class BikeRent
+    {
+        // Pola
+        //
+        // Rower dowolnego rodzaju
+        Bike bicycle = new Bike;
+        public Bike Bicycle   // getter
+        {
+            get { return bicycle; }
+        }
+
+        // Czas w którym rower został wypożyczony
+        DateTime startTime;
+        public DateTime StartTime  // getter
+        {
+            get { return startTime; }
+        }
+
+        // Czas w którym rower został oddany do stacji
+        DateTime endTime;
+        public DateTime EndTime  // getter, setter
+        {
+            get { return endTime; }
+            set { endTime = value; }
+        }
+
+        // Stacja początkowa wypożyczenia, ustawiana przy wypożyczeniu
+        BikeStation startStation;
+        public BikeStation StartStation  // getter
+        {
+            get { return startStation; }
+        }
+
+        // Stacja końcowa wypożyczenia, ustawiana przy oddaniu rowera
+        BikeStation endStation;
+        public BikeStation EndStation  // getter, setter
+        {
+            get { return endStation; }
+            set { endStation = value; }
+        }
+
+        // Kosz wypożyczenia roweru
+        // Pole ma setter jako metodę
+        double cost;
+        public double Cost  // getter
+        {
+            get { return cost; }
+        }
+
+        // Konstruktor
+        public BikeRent() { }
+
+        // Metody
+        //
+        // Ustawienie ceny wypożyczenia roweru
+        public void SetCost(string startTime, string endTime, double bikePrice)
+        {
+            // Cena = cena roweru + czas wypożyczenia, gdzie każda minuta kosztuje 2 grosze
+            cost = bikePrice + (endTime - startTime) * 0.02;
+        }
+
+        // Zwraca string z informacjami o wypożyczeniu - informacje o rowerze, długość czasu wypożyczenia, stacja początkowa, stacja końcowa (jeśli jest)
+        public override string ToString()
+        {
+            string returnString = ("Rower: " + bicycle.ToString() + "\nCzas wypożyczenia: " + (endTime - startTime) + "\nStacja początkowa: " + startStation.ToString());
+
+            // Stacja końcowa może nie być zapisana, np. gdy rower jest jeszcze używany.
+            if (endStation != null)
+            {
+                returnString += ("\nStacja końcowa: " + endStation.ToString());
+            }
+
+            return returnString;
+        }
+    }
+
 
 
     // Funkcja main
