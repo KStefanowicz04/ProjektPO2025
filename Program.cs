@@ -305,6 +305,7 @@ public abstract class Bike
             foreach (BikeStation station in stations)
             {
                 Console.WriteLine(station.ToString());
+                station.getStationInfo();
             }
             
         }
@@ -422,6 +423,30 @@ public abstract class Bike
             return name;
         }
 
+        public void getStationInfo()
+        {
+                Console.WriteLine("Rowery zwykłe:");
+                List<Bike> listka = this.GetRegular();
+                for (int i = 0; i < listka.Count; i++)
+                {
+                    Console.Write(listka[i].ID + " ");
+                }
+                Console.WriteLine();
+                Console.WriteLine("Rowery dziecięce:");
+                listka = this.GetChild();
+                for (int i = 0; i < listka.Count; i++)
+                {
+                    Console.Write(listka[i].ID + " ");
+                }
+                Console.WriteLine();
+                Console.WriteLine("Rowery typu tandem:");
+                listka = this.GetTandem();
+                for (int i = 0; i < listka.Count; i++)
+                {
+                    Console.Write(listka[i].ID + " ");
+                }
+                Console.WriteLine();
+        }
         // Zwraca informacje o stacji rowerowej
         public override string ToString()
         {
@@ -657,6 +682,7 @@ public abstract class Bike
                     if (bikestacja != null)
                     {
                         Console.WriteLine(bikestacja.ToString());
+                        bikestacja.getStationInfo();
                     }
                     else
                     {
