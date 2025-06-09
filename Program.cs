@@ -17,12 +17,20 @@ class Program
             get { return price; }
         }
 
+
+        // Pola do generowania ID w konstruktorze
+        static HashSet<int> takenIDs = new HashSet<int>();
+        static Random rand = new Random();
+
         // Konstruktor
         public Bike(double price)
         {
-            // Losowanie 4-numerowego ID roweru
-            Random rand = new Random();
-            id = rand.Next() % 9999;
+            // Generowanie losowego ID w pętli while aż ID będzie unikalne
+            do
+            {
+                id = rand.Next(1, int.MaxValue);
+            }
+            while (!takenIDs.Add(id));
 
             this.price = price;
         }
