@@ -26,6 +26,12 @@ class Program
 
             this.price = price;
         }
+
+
+        public override string ToString()
+        {
+            return "ID roweru: " + id + "\nRodzaj roweru: " + this.GetType().Name;
+        }
     }
 
     // Rower zwykły
@@ -33,6 +39,8 @@ class Program
     {
         // Konstruktor
         public RegularBike(double price) : base(price) { }
+
+
     }
 
     // Rower dziecięcy
