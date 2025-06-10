@@ -105,7 +105,7 @@ class User
                 }
                 ostatnia.AddBike(aa.Bicycle);
             aa.SetEndStation(Station_name);
-            aa.SetCost();
+            this.Pieniadze=this.Pieniadze-aa.SetCost();
             Rent_Active.Remove(aa);
 
             Rent_History.Add(aa);
@@ -517,13 +517,13 @@ public abstract class Bike
         // Metody
         //
         // Ustawienie ceny wypożyczenia roweru
-        public void SetCost()
+        public double SetCost()
         {
             TimeSpan span = endTime - startTime;  // Czas od początku do końca wypożyczenia roweru.
             double totalTime = span.TotalMinutes;
             // Cena = cena roweru + czas wypożyczenia, gdzie każda minuta kosztuje 2 grosze
-            cost = (totalTime * 0.02); /*bikePrice +*/ 
-            
+            cost = (totalTime * 0.02); /*bikePrice +*/
+            return cost;
         }
 
         public void SetEndTime(DateTime EndTime2)
