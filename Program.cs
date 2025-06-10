@@ -2,6 +2,85 @@
 
 class Program
 {
+    // Wyjątki
+    //
+    // Rejestracja: nazwa użytkownika jest zajęta
+    public class DuplicateUserException : Exception
+    {
+        public DuplicateUserException(string message) : base("Użytkownika już istnieje!") { }
+    }
+    // Rejestracja: numer telefonu musi mieć 9 liczb
+    public class WrongPhoneNumberException : Exception
+    {
+        public WrongPhoneNumberException(string message) : base("Numer telefonu jest niepoprawny!") { }
+    }
+    // Rejestracja: mail musi zawierać "@"
+    public class WrongMailException : Exception
+    {
+        public WrongMailException(string message) : base("Mail jest niepoprawny!") { }
+    }
+    // Rejestracja: pieniądze muszą >=0
+    public class WrongMoneyException : Exception
+    {
+        public WrongMoneyException(string message) : base("Niepoprawna ilość pieniędzy!") { }
+    }
+
+    // Logowanie: Użytkownik próbuje się zalogować gdy inny użytkownik już jest zalogowany
+    public class SessionConflictException : Exception
+    {
+        public SessionConflictException(string message) : base("Użytkownik już jest zalogowany!") { }
+    }
+    // Logowanie: Nie znaleziono użytkownika
+    public class UserNotFoundException : Exception
+    {
+        public UserNotFoundException(string message) : base("Nie znaleziono użytkownika!") { }
+    }
+    // Logowanie: Użytkownik nie jest zalogowany
+    public class AuthenticationRequiredException : Exception
+    {
+        public AuthenticationRequiredException(string message) : base("Użytkownik musi być zalogowany żeby wykonać operację!") { }
+    }
+
+    // Wypożyczanie: Dana stacja nie istnieje w agregatorze
+    public class WrongStationException : Exception
+    {
+        public WrongStationException(string message) : base("Dana stacja nie istnieje!") { }
+    }
+    // Wypożyczanie: Brak środków na koncie
+    public class NoFundsException : Exception
+    {
+        public NoFundsException(string message) : base("Brak środków na koncie!") { }
+    }
+
+    // DateTime: Niepoprawny format daty
+    public class WrongDateFormatException : Exception
+    {
+        public WrongDateFormatException(string message) : base("Niepoprawny format daty!") { }
+    }
+
+    // Bike: Dany rower nie istnieje
+    public class BikeNotFoundException : Exception
+    {
+        public BikeNotFoundException(string message) : base("Dany rower nie istnieje!") { }
+    }
+
+    // Rent: Nie znaleziono wypożyczenia
+    public class RentNotFoundException : Exception
+    {
+        public RentNotFoundException(string message) : base("Nie znaleziono wypożyczenia!") { }
+    }
+
+    // Stacja: Brak miejsc
+    public class NotEnoughFreeSpaceException : Exception
+    {
+        public NotEnoughFreeSpaceException(string message) : base("Brak miejsc na stacji!") { }
+    }
+    
+
+
+
+
+
     class User
     {
         private string Imie;
@@ -44,39 +123,32 @@ class Program
         public void Rent(int Bike_id, string Station_name, string Start_time)
         {
             BikeStation a = agregatorStacji.getStation(Station_name);
-            if (a != null && this.Pieniadze > 0)
-            {
-                DateTime dataa;
-                if (DateTime.TryParse(Start_time, out dataa))
-                {
 
-                }
-                else
-                {
-                    Console.WriteLine("Niepoprawny format daty.");
-                    return;
-                }
-                Bike rentowany = a.RemoveBike(Bike_id);
-                if (rentowany != null)
-                {
-                    Rent_Active.Add(new BikeRent(rentowany, dataa, a));
-                }
-                else
-                {
-                    Console.WriteLine("Nie znaleziono tego roweru");
-                }
-            }
-            else
+            // Podana stacja nie istnieje w agregatorze stacji
+            if (a == null) { throw new WrongStationException(""); }
+            if (Pieniadze < 0) { throw new NoFundsException("");  }
+
+            DateTime dataa;
+            // Zły format daty
+            if (DateTime.TryParse(Start_time, out dataa)) { throw new WrongDateFormatException("");  }
+
+            Bike rentowany = a.RemoveBike(Bike_id);
+            if (rentowany != null)
             {
-                Console.WriteLine("Nazwa stacji niepoprawna lub brakuje ci środków");
+                Rent_Active.Add(new BikeRent(rentowany, dataa, a));
+                Console.WriteLine("Wypożyczenie roweru przebiegło pomyślnie!");
                 return;
             }
-
-
+            else  // Dany rower nie istnieje
+            {
+                throw new BikeNotFoundException("");
+            }
         }
+
         public void Return_Bike(int Bike_id, string Station_name, string End_time)
         {
             BikeRent aa = null;
+
             for (int i = 0; i < Rent_Active.Count; i++)
             {
                 //if (Rent_Active[i].rentBike(Bike_id) != null)
@@ -86,9 +158,13 @@ class Program
                     break;
                 }
             }
-            if (aa == null) { Console.WriteLine("Nie znaleziono wypożyczenia"); return; }
+
+            if (aa == null) { throw new RentNotFoundException(""); }
+
             BikeStation ostatnia = agregatorStacji.getStation(Station_name);
-            if (ostatnia == null) { Console.WriteLine("Nie znaleziono stacji końcowej"); return; }
+
+            if (ostatnia == null) { throw new WrongStationException(""); }
+
             if (ostatnia.FreeSlots > 0)
             {
 
@@ -99,8 +175,7 @@ class Program
                 }
                 else
                 {
-                    Console.WriteLine("Niepoprawny format daty.");
-                    return;
+                    throw new WrongDateFormatException("");
                 }
                 ostatnia.AddBike(aa.Bicycle);
                 aa.SetEndStation(Station_name);
@@ -111,8 +186,7 @@ class Program
             }
             else
             {
-                Console.WriteLine("Zabrakło wolnych miejsc na stacji rowerowej. Wybierz inną stację.");
-                return;
+                throw new NotEnoughFreeSpaceException("");
             }
 
         }
@@ -139,7 +213,8 @@ class Program
         }
         public void Display_Rent_History()
         {
-            Console.WriteLine("Niekatywne wypożyczenia:");
+
+            Console.WriteLine("Nieaktywne wypożyczenia:");
             for (int i = 0; i < Rent_History.Count; i++)
             {
                 Console.WriteLine(Rent_History[i].ToString());
@@ -159,48 +234,55 @@ class Program
         }
         public void Register(string Imie, string Nazwisko, string Numertel, string Mail, double Pieniadze = 0)
         {
-            for (int i = 0; i < Users.Count; i++)
+            // Wyjątek - użytkownik już istnieje
+            foreach (User userInst in Users)
             {
-                if (Users[i].getImie() == Imie && Users[i].getNazwisko() == Nazwisko && (Users[i].getNumertel() == Numertel || Users[i].getMail() == Mail))
+                if (userInst.getImie() == Imie && userInst.getNazwisko() == Nazwisko && (userInst.getNumertel() == Numertel || userInst.getMail() == Mail))
                 {
-                    Console.WriteLine("Już posiadasz konto");
-                    return;
+                    throw new DuplicateUserException("");
                 }
             }
-            if (Numertel.Length != 9) { Console.WriteLine("Niepoprawny numer telefonu"); return; }
-            if (Mail.Contains("@") == true && Pieniadze >= 0)
-            {
-                Users.Add(new User(Imie, Nazwisko, Numertel, Mail, Pieniadze));
-            }
-            else
-            {
-                Console.WriteLine("Niepoprawna kwota lub adres e-mail");
-            }
+            // Wyjątek - numer tel musi mieć 9 liczb
+            if (Numertel.Length != 9) { throw new WrongPhoneNumberException(""); }
+            // Wyjątek - mail musi zawierać "@"
+            if (Mail.Contains("@") != true) { throw new WrongMailException(""); }
+            // Wyjątek - liczba pieniędzy musi >= 0
+            if (Pieniadze < 0) { throw new WrongMoneyException(""); }
+
+            // Brak wyjątków - dodanie nowego użytkownika
+            Users.Add(new User(Imie, Nazwisko, Numertel, Mail, Pieniadze));
+            Console.WriteLine("Rejestracja przebiegła pomyślnie!");
         }
+
         public void Login(string Imie, string Nazwisko, string Numertel, string Mail)
         {
-            if (CurrentUser != null)
+            // Logowanie bez wcześniejszego wylogowania
+            if (CurrentUser != null) { throw new SessionConflictException(""); }
+
+            foreach (User userInst in Users)
             {
-                Console.WriteLine("Jesteś już zalogowany");
-                return;
-            }
-            for (int i = 0; i < Users.Count; i++)
-            {
-                if (Users[i].getImie() == Imie && Users[i].getNazwisko() == Nazwisko && Users[i].getNumertel() == Numertel && Users[i].getMail() == Mail)
+                if (userInst.getImie() == Imie && userInst.getNazwisko() == Nazwisko && userInst.getNumertel() == Numertel && userInst.getMail() == Mail)
                 {
-                    CurrentUser = Users[i];
+                    CurrentUser = userInst;
+                    Console.WriteLine("Zalogowano jako " + CurrentUser.getImie());
                     return;
                 }
             }
-            Console.WriteLine("Nie ma takiego użytkownika");
+            // Logowanie nie powiodło się
+            throw new UserNotFoundException("");
         }
+
         public void Logout()
         {
+            // Trzeba być zalogowanym żeby się wylogować
+            if (CurrentUser == null) { throw new AuthenticationRequiredException(""); }
+
             CurrentUser = null;
         }
 
         public User getCurrentUser()
         {
+            if (CurrentUser == null) { throw new AuthenticationRequiredException(""); }
             return CurrentUser;
         }
     }
@@ -288,6 +370,7 @@ class Program
                     return stations[i];
                 }
             }
+
             Console.WriteLine("Nie ma takiej stacji");
             return null;
         }
@@ -375,7 +458,7 @@ class Program
                     break;
                 }
             }
-            if (czy_znaleziono == 0) Console.WriteLine("nie znaleziono takiego roweru");
+            //if (czy_znaleziono == 0) Console.WriteLine("nie znaleziono takiego roweru");
             return null;
         }
 
@@ -579,27 +662,20 @@ class Program
         ChildBike crower3 = new ChildBike(20);
 
         // Stacja rowerowa
-        BikeStation stacja = new BikeStation("Stacja 1", 6);
+        BikeStation stacja = new BikeStation("Stacja1", 7);
         stacja.AddBike(rower1);
         stacja.AddBike(rower2);
         stacja.AddBike(crower1);
         stacja.AddBike(crower2);
         stacja.AddBike(crower3);
 
-        stacja.GetRegular();
-        stacja.GetChild();
-        stacja.GetTandem();
-        Console.WriteLine("Free: " + stacja.FreeSlots);
-
-        //Console.WriteLine(stacja.ToString());
-
         agregatorStacji = new StationsAggregation();
         agregatorStacji.AddStation(stacja);
         agregatorStacji.GetStationsInfo();
-        agregatorStacji.RemoveStation(stacja);
-        agregatorStacji.GetStationsInfo();
 
         Users_Manager manago = new Users_Manager();
+        // Przykładowy użytkownika
+        manago.Register("a", "a", "123123123", "a@a", 100000);
 
         string im, na, nr, ma, input, nazwa_stacji, czass;
         double cash;
@@ -609,7 +685,7 @@ class Program
         // Menu główne
         while (true)
         {
-            Console.WriteLine("Wybierz operację:");
+            Console.WriteLine("\nWybierz operację:");
             Console.WriteLine("1: Zaloguj się\n2: Wyloguj się\n3: Zarejestruj się\n4: Wypożycz rower\n5: Historia wypożyczeń użytkownika\n" +
                 "6: Lista wypożyczalni rowerów\n7: Lista rowerów w danej wypożyczalni\n8: Zwróć rower \n9: Dodaj pieniądze na konto\n10: Aktywne wypożyczenia\n11: Zakończ program");
 
@@ -627,11 +703,33 @@ class Program
                     nr = Console.ReadLine();
                     Console.WriteLine("Podaj mail");
                     ma = Console.ReadLine();
-                    manago.Login(im, na, nr, ma);
+
+                    try
+                    {
+                        manago.Login(im, na, nr, ma);
+                    }
+                    catch (UserNotFoundException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (SessionConflictException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                     break;
 
                 case "2":  // Wylogowanie
-                    manago.Logout();
+
+                    try
+                    {
+                        manago.Logout();
+                    }
+                    catch (AuthenticationRequiredException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    
                     break;
 
                 case "3":  // Rejestracja
@@ -645,45 +743,101 @@ class Program
                     ma = Console.ReadLine();
                     Console.WriteLine("Jeśli chcesz, podaj sumę, którą chcesz wpłacić");
                     input = Console.ReadLine();
-                    if (double.TryParse(input, out cash))
-                    {
-
-                    }
+                    if (double.TryParse(input, out cash)) { }
                     else
                     {
                         Console.WriteLine("Błędny format liczby!");
                         break;
                     }
-                    manago.Register(im, na, nr, ma, cash);
+
+                    try
+                    {
+                        manago.Register(im, na, nr, ma, cash);
+                    }
+                    catch (WrongMoneyException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (WrongMailException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (WrongPhoneNumberException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (DuplicateUserException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                     break;
 
                 case "4":  // Wypożycz rower
-                           //public void Rent(int Bike_id, string Station_name, string Start_time)
                     Console.WriteLine("Podaj nr ID roweru");
                     input = Console.ReadLine();
-                    if (int.TryParse(input, out idd))
-                    {
-
-                    }
+                    if (int.TryParse(input, out idd)) { }
                     else
                     {
                         Console.WriteLine("Błędnie wpisany numer ID");
                         break;
                     }
+
                     Console.WriteLine("Podaj nazwę stacji");
                     nazwa_stacji = Console.ReadLine();
-                    Console.WriteLine("Podaj czas w formacie DateTime");
-                    //ewentualnie tu można zrobić DateTime.Now
-                    czass = Console.ReadLine();
-                    currentt = manago.getCurrentUser();
-                    currentt.Rent(idd, nazwa_stacji, czass);
 
+                    Console.WriteLine("Podaj czas w formacie DateTime");
+                    czass = Console.ReadLine();
+
+                    try
+                    {
+                        currentt = manago.getCurrentUser();
+                    }
+                    catch (AuthenticationRequiredException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    
+
+                    
+
+                    try
+                    {
+                        currentt.Rent(idd, nazwa_stacji, czass);
+                    }
+                    catch (BikeNotFoundException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (WrongDateFormatException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (NoFundsException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (WrongStationException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
 
                     break;
 
                 case "5":  // Historia wypożyczeń użytkownika
-                    currentt = manago.getCurrentUser();
-                    currentt.Display_Rent_History();
+
+                    try
+                    {
+                        currentt = manago.getCurrentUser();
+                        currentt.Display_Rent_History();
+                    }
+                    catch (AuthenticationRequiredException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    
+                    
+
                     break;
 
                 case "6":  // Lista wypożyczalni rowerów
@@ -704,7 +858,8 @@ class Program
                         Console.WriteLine("Błędna nazwa stacji");
                     }
                     break;
-                case "8": //Zwróc rower
+
+                case "8": // Zwróć rower
                     Console.WriteLine("Podaj nr ID roweru");
                     input = Console.ReadLine();
                     if (int.TryParse(input, out idd))
@@ -719,13 +874,52 @@ class Program
                     Console.WriteLine("Podaj nazwę stacji");
                     nazwa_stacji = Console.ReadLine();
                     Console.WriteLine("Podaj czas w formacie DateTime");
-                    //ewentualnie tu można zrobić DateTime.Now
+                    
                     czass = Console.ReadLine();
-                    currentt = manago.getCurrentUser();
-                    currentt.Return_Bike(idd, nazwa_stacji, czass);
+
+                    try
+                    {
+                        currentt = manago.getCurrentUser();
+                    }
+                    catch (AuthenticationRequiredException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        break;
+                    }
+
+                    try
+                    {
+                        currentt.Return_Bike(idd, nazwa_stacji, czass);
+                    }
+                    catch (NotEnoughFreeSpaceException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (WrongDateFormatException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (WrongStationException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    catch (RentNotFoundException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                     break;
-                case "9": //Dodaj pieniadze na konto
-                    currentt = manago.getCurrentUser();
+
+                case "9": // Dodaj pieniadze na konto
+                    try
+                    {
+                        currentt = manago.getCurrentUser();
+                    }
+                    catch (AuthenticationRequiredException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
                     Console.WriteLine("Podaj kwotę");
                     input = Console.ReadLine();
                     if (double.TryParse(input, out cash))
@@ -739,8 +933,16 @@ class Program
                     }
                     currentt.Deposit(cash);
                     break;
-                case "10": //Aktywne wypożyczenia użytkownika
-                    currentt = manago.getCurrentUser();
+
+                case "10": // Aktywne wypożyczenia użytkownika
+                    try
+                    {
+                        currentt = manago.getCurrentUser();
+                    }
+                    catch (AuthenticationRequiredException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                     currentt.Display_Rent_Active();
                     break;
 
