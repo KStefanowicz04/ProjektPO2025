@@ -142,13 +142,13 @@ Exception <|-- BikeNotFoundException
 Exception <|-- RentNotFoundException
 Exception <|-- NotEnoughFreeSpaceException
 
-User "1" --> "0..*" BikeRent : wypożycza
+User "1" *-- "0..*" BikeRent : wypożycza
 Bike <|-- RegularBike
 Bike <|-- TandemBike
 Bike <|-- ChildBike
 StationsAggregation "1" o-- "0..*" BikeStation
 BikeStation "1" o-- "0..*" Bike
-BikeRent "1" --> "1" Bike
-BikeRent "1" --> "2" BikeStation
+BikeRent "1" --o "1" Bike
+BikeRent "1" --* "2" BikeStation
 Users_Manager "1" o-- "0..*" User
 @enduml
