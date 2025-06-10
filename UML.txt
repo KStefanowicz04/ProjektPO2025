@@ -1,52 +1,50 @@
 @startuml
 
-class UsersManager
+class Users_Manager
 {
-    - users: User[]
-    - currentUser: User
+    - Users: List<User>
+    - CurrentUser: User
 
-    + UsersManager()
-    + Register(imie: string, nazwisko: string, numertel: string, mail: string, pieniadze: double): void
-    + Login(imie: string, nazwisko: string, numertel: string, mail: string): void
+    + Users_Manager()
+    + Register(Imie: string, Nazwisko: string, Numertel: string, Mail: string, Pieniadze: double = 0): void
+    + Login(Imie: string, Nazwisko: string, Numertel: string, Mail: string): void
     + Logout(): void
-    + GetCurrentUser(): User
+    + getCurrentUser(): User
 }
 
 class User {
-    - imie: string
-    - nazwisko: string
-    - pieniadze: double
-    - numertel: string
-    - mail: string
-    - rentActive: BikeRent[]
-    - rentHistory: BikeRent[]
+    - Imie: string
+    - Nazwisko: string
+    - Numertel: string
+    - Mail: string
+    - Pieniadze: double
+    - Rent_Active: List<BikeRent>
+    - Rent_History: List<BikeRent>
 
-    + User(imie: string, nazwisko: string, pieniadze: double, numertel: string, mail: string)
-    + Rent(bikeID: int, stationName: string, startTime: string): void
-    + ReturnBike(bikeID: int, stationName: string, endTime: string): void
-    + Deposit(value: double): void
-    + DisplayRentActive(): void
-    + DisplayRentHistory(): void
+    + User(Imie: string, Nazwisko: string, Numertel: string, Mail: string, Pieniadze: double = 0)
+    + getImie(): string
+    + getNazwisko(): string
+    + getNumertel(): string
+    + getMail(): string
+    + Rent(Bike_id: int, Station_name: string, Start_time: string): void
+    + Return_Bike(Bike_id: int, Station_name: string, End_time: string): void
+    + Deposit(Value: double): void
+    + Display_Rent_Active(): void
+    + Display_Rent_History(): void
 }
 
 class BikeRent {
-    - bicycle: Bike
-    - startTime: DateTime
-    - endTime: DateTime
-    - startStation: BikeStation
-    - endStation: BikeStation
-    - cost: double
+    - <<get>> bicycle: Bike
+    - <<get>> startTime: DateTime
+    - <<get/set>> endTime: DateTime
+    - <<get>> startStation: BikeStation
+    - <<get/set>> endStation: BikeStation
+    - <<get>> cost: double
 
-    + BikeRent(bicycle: Bike, startTime: DateTime, startStation: BikeStation)
-    + GetBike(): Bike
-    + GetStartTime(): string
-    + GetEndTime(): string
-    + SetEndTime(): void
-    + GetStartStation(): BikeStation
-    + GetEndStation(): string
-    + SetEndStation(): void
-    + GetCost(): double
-    + SetCost(bikePrice: double): void
+    + BikeRent(bicycl: Bike, startTime: DateTime, startStation: BikeStation)
+    + SetCost(): double
+    + SetEndTime(EndTime2: DateTime): void
+    + SetEndStation(EndStation2: string): void
     + ToString(): string
 }
 
@@ -55,6 +53,7 @@ class StationsAggregation
     - stations: List<BikeStation>
 
     + StationsAggregation()
+    + getStation(Name: string): BikeStation
     + AddStation(newStation: BikeStation): void
     + RemoveStation(removedStation: BikeStation): void
     + GetStationsInfo(): void
@@ -65,54 +64,53 @@ class BikeStation
     - name: string
     - allBikes: List<Bike>
     - totalSlots: int
-    - freeSlots: int
+    - <<get>> freeSlots: int
 
     + BikeStation(name: string, totalSlots: int)
     + AddBike(newBike: Bike): void
-    + RemoveBike(removedBike: Bike): void
+    + RemoveBike(removedBike_id: Bike): Bike
     + GetRegular(): List<Bike>
     + GetChild(): List<Bike>
     + GetTandem(): List<Bike>
-    + GetFreeSlots(): bool
+    + getName(): string
+    + getStationInfo(): void
     + ToString(): string
 }
 
 abstract class Bike
 {
-    - id: int
-    - price: double
+    - <<get>> id: int
+    - <<get>> price: double
+    - static takenIDs: HashSet<id>
+    - static rand: Random 
 
     + Bike(price: double)
-    + GetID(): int
-    + GetPrice(): double
+    + ToString(): string
 }
 
 class RegularBike
 {
-    - id: int
-    - price: double
+    - <<get>> id: int
+    - <<get>> price: double
 
-    + RegularBike(price: double)
-    + GetPrice(): double
-    + GetID(): int
+    + Bike(price: double)
+    + ToString(): string
 }
 class ChildBike
 {
-    - id: int
-    - price: double
+    - <<get>> id: int
+    - <<get>> price: double
 
-    +ChildBike(price: double)
-    + GetPrice(): double
-    + GetID(): int
+    + Bike(price: double)
+    + ToString(): string
 }
 class TandemBike
 {
-    - id: int
-    - price: double
+    - <<get>> id: int
+    - <<get>> price: double
 
-    TandemBike(price: double)
-    + GetPrice(): double
-    + GetID(): int
+    + Bike(price: double)
+    + ToString(): string
 }
 
 User "1" --> "0..*" BikeRent : wypożycza
@@ -123,5 +121,5 @@ StationsAggregation "1" o-- "0..*" BikeStation
 BikeStation "1" o-- "0..*" Bike
 BikeRent "1" --> "1" Bike
 BikeRent "1" --> "2" BikeStation
-UsersManager "1" o-- "0..*" User
+Users_Manager "1" o-- "0..*" User
 @enduml
