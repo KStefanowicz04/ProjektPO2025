@@ -1,5 +1,20 @@
 @startuml
 
+exception Exception
+exception DuplicateUserException
+exception WrongPhoneNumberException
+exception WrongMailException
+exception WrongMoneyException
+exception SessionConflictException
+exception UserNotFoundException
+exception AuthenticationRequiredException
+exception WrongStationException
+exception NoFundsException
+exception WrongDateFormatException
+exception BikeNotFoundException
+exception RentNotFoundException
+exception NotEnoughFreeSpaceException
+
 class Users_Manager
 {
     - Users: List<User>
@@ -112,6 +127,20 @@ class TandemBike
     + Bike(price: double)
     + ToString(): string
 }
+
+Exception <|-- DuplicateUserException
+Exception <|-- WrongPhoneNumberException
+Exception <|-- WrongMailException
+Exception <|-- WrongMoneyException
+Exception <|-- SessionConflictException
+Exception <|-- UserNotFoundException
+Exception <|-- AuthenticationRequiredException
+Exception <|-- WrongStationException
+Exception <|-- NoFundsException
+Exception <|-- WrongDateFormatException
+Exception <|-- BikeNotFoundException
+Exception <|-- RentNotFoundException
+Exception <|-- NotEnoughFreeSpaceException
 
 User "1" --> "0..*" BikeRent : wypożycza
 Bike <|-- RegularBike
