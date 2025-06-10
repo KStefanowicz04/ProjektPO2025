@@ -636,7 +636,7 @@ class Program
         // Zwraca string z informacjami o wypożyczeniu - informacje o rowerze, długość czasu wypożyczenia, stacja początkowa, stacja końcowa (jeśli jest)
         public override string ToString()
         {
-            string returnString = ("Rower: " + bicycle.ToString() + "\nCzas wypożyczenia: " + (endTime - startTime) + "\nStacja początkowa: " + startStation.ToString());
+            string returnString = ("ID Roweru: " + bicycle.ID + "\nCzas wypożyczenia: " + (endTime - startTime) + "\nStacja początkowa: " + startStation.ToString());
 
             // Stacja końcowa może nie być zapisana, np. gdy rower jest jeszcze używany.
             if (endStation != null)
