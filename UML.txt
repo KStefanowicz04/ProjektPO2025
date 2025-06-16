@@ -3,7 +3,7 @@
 exception Exception
 exception DuplicateUserException
 exception WrongPhoneNumberException
-exception WrongMailException
+exception WrongmailException
 exception WrongMoneyException
 exception SessionConflictException
 exception UserNotFoundException
@@ -15,37 +15,37 @@ exception BikeNotFoundException
 exception RentNotFoundException
 exception NotEnoughFreeSpaceException
 
-class Users_Manager
+class UsersManager
 {
-    - Users: List<User>
-    - CurrentUser: User
+    - users: List<User>
+    - currentUser: User
 
-    + Users_Manager()
-    + Register(Imie: string, Nazwisko: string, Numertel: string, Mail: string, Pieniadze: double = 0): void
-    + Login(Imie: string, Nazwisko: string, Numertel: string, Mail: string): void
+    + UsersManager()
+    + Register(imie: string, nazwisko: string, numerTel: string, mail: string, pieniadze: double = 0): void
+    + Login(imie: string, nazwisko: string, numerTel: string, mail: string): void
     + Logout(): void
-    + getCurrentUser(): User
+    + GetCurrentUser(): User
 }
 
 class User {
-    - Imie: string
-    - Nazwisko: string
-    - Numertel: string
-    - Mail: string
-    - Pieniadze: double
-    - Rent_Active: List<BikeRent>
-    - Rent_History: List<BikeRent>
+    - imie: string
+    - nazwisko: string
+    - numerTel: string
+    - mail: string
+    - pieniadze: double
+    - rentActive: List<BikeRent>
+    - rentHistory: List<BikeRent>
 
-    + User(Imie: string, Nazwisko: string, Numertel: string, Mail: string, Pieniadze: double = 0)
-    + getImie(): string
-    + getNazwisko(): string
-    + getNumertel(): string
-    + getMail(): string
+    + User(imie: string, nazwisko: string, numerTel: string, mail: string, pieniadze: double = 0)
+    + GetImie(): string
+    + GetNazwisko(): string
+    + GetNumerTel(): string
+    + GetMail(): string
     + Rent(Bike_id: int, Station_name: string, Start_time: string): void
-    + Return_Bike(Bike_id: int, Station_name: string, End_time: string): void
+    + ReturnBike(Bike_id: int, Station_name: string, End_time: string): void
     + Deposit(Value: double): void
-    + Display_Rent_Active(): void
-    + Display_Rent_History(): void
+    + DisplayRentActive(): void
+    + DisplayRentHistory(): void
 }
 
 class BikeRent {
@@ -68,7 +68,7 @@ class StationsAggregation
     - stations: List<BikeStation>
 
     + StationsAggregation()
-    + getStation(Name: string): BikeStation
+    + GetStation(Name: string): BikeStation
     + AddStation(newStation: BikeStation): void
     + RemoveStation(removedStation: BikeStation): void
     + GetStationsInfo(): void
@@ -87,8 +87,8 @@ class BikeStation
     + GetRegular(): List<Bike>
     + GetChild(): List<Bike>
     + GetTandem(): List<Bike>
-    + getName(): string
-    + getStationInfo(): void
+    + GetName(): string
+    + GetStationBikes(): void
     + ToString(): string
 }
 
@@ -96,7 +96,7 @@ abstract class Bike
 {
     - <<get>> id: int
     - <<get>> price: double
-    - static takenIDs: HashSet<id>
+    - static takenIDs: HashSet<int>
     - static rand: Random 
 
     + Bike(price: double)
@@ -130,7 +130,7 @@ class TandemBike
 
 Exception <|-- DuplicateUserException
 Exception <|-- WrongPhoneNumberException
-Exception <|-- WrongMailException
+Exception <|-- WrongmailException
 Exception <|-- WrongMoneyException
 Exception <|-- SessionConflictException
 Exception <|-- UserNotFoundException
@@ -150,5 +150,5 @@ StationsAggregation "1" o-- "0..*" BikeStation
 BikeStation "1" *-- "0..*" Bike
 BikeRent "1" o-- "1" Bike
 BikeRent "1" *-- "2" BikeStation
-Users_Manager "1" *-- "0..*" User
+UsersManager "1" *-- "0..*" User
 @enduml
