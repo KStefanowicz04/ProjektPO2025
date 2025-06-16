@@ -15,9 +15,9 @@ class Program
         public WrongPhoneNumberException(string message) : base("Numer telefonu jest niepoprawny!") { }
     }
     // Rejestracja: mail musi zawierać "@"
-    public class WrongmailException : Exception
+    public class WrongMailException : Exception
     {
-        public WrongmailException(string message) : base("mail jest niepoprawny!") { }
+        public WrongMailException(string message) : base("Mail jest niepoprawny!") { }
     }
     // Rejestracja: pieniądze muszą >=0
     public class WrongMoneyException : Exception
@@ -83,88 +83,95 @@ class Program
 
     class User
     {
-        private string imie;
-        private string nazwisko;
-        private string numerTel;
-        private string mail;
-        private double pieniadze;
-        private List<BikeRent> rentActive;
-        private List<BikeRent> rentHistory;
-        public User(string imie, string nazwisko, string numerTel, string mail, double pieniadze = 0)
+        private string Imie;
+        private string Nazwisko;
+        private string Numertel;
+        private string Mail;
+        private double Pieniadze;
+        private List<BikeRent> Rent_Active;
+        private List<BikeRent> Rent_History;
+        public User(string Imie, string Nazwisko, string Numertel, string Mail, double Pieniadze = 0)
         {
-            this.imie = imie;
-            this.nazwisko = nazwisko;
-            this.numerTel = numerTel;
-            this.mail = mail;
-            this.pieniadze = pieniadze;
-            // Utworzenie listy rentActive
-            this.rentActive = new List<BikeRent>();
-            // Utworzenie listy rentHistory
-            this.rentHistory = new List<BikeRent>();
+            this.Imie = Imie;
+            this.Nazwisko = Nazwisko;
+            this.Numertel = Numertel;
+            this.Mail = Mail;
+            this.Pieniadze = Pieniadze;
+            //tworzenie listy Rent_Active
+            this.Rent_Active = new List<BikeRent>();
+            //tworzenie listy Rent_History
+            this.Rent_History = new List<BikeRent>();
         }
-
-        public string GetImie()
+        public string getImie()
         {
-            return imie;
+            return Imie;
         }
-
-        public string GetNazwisko()
+        public string getNazwisko()
         {
-            return nazwisko;
+            return Nazwisko;
         }
-
-        public string GetNumerTel()
+        public string getNumertel()
         {
-            return numerTel;
+            return Numertel;
         }
-
-        public string GetMail()
+        public string getMail()
         {
-            return mail;
+            return Mail;
+        }
+        public string getPieniadze()
+        {
+            return Pieniadze.ToString();
         }
 
         //poniższe tylko wtedy gdy zalogowany:
-        public void Rent(int bikeID, string stationName, string startTime)
+        public void Rent(int Bike_id, string Station_name, string Start_time)
         {
-            BikeStation a = agregatorStacji.GetStation(stationName);
+            BikeStation a = agregatorStacji.getStation(Station_name);
 
             // Podana stacja nie istnieje w agregatorze stacji
             if (a == null) { throw new WrongStationException(""); }
-            if (pieniadze < 0) { throw new NoFundsException("");  }
+            if (Pieniadze < 0) { throw new NoFundsException(""); }
 
             DateTime dataa;
             // Zły format daty
-            if (DateTime.TryParse(startTime, out dataa)) { throw new WrongDateFormatException("");  }
+            if (DateTime.TryParse(Start_time, out dataa))
+            {
+                Start_time = Start_time;
+            }
+            else
+            {
+                throw new WrongDateFormatException("");
+            }
 
-            Bike rentowany = a.RemoveBike(bikeID);
+            Bike rentowany = a.RemoveBike(Bike_id);
             if (rentowany != null)
             {
-                rentActive.Add(new BikeRent(rentowany, dataa, a));
+                Rent_Active.Add(new BikeRent(rentowany, dataa, a));
                 Console.WriteLine("Wypożyczenie roweru przebiegło pomyślnie!");
-                return;
             }
             else  // Dany rower nie istnieje
             {
-                throw new BikeNotFoundException("Dany rower nie został znaleziony!");
+                throw new BikeNotFoundException("");
             }
         }
 
-        public void ReturnBike(int bikeID, string stationName, string End_time)
+        public void Return_Bike(int Bike_id, string Station_name, string End_time)
         {
             BikeRent aa = null;
 
-            for (int i = 0; i < rentActive.Count; i++)
+            for (int i = 0; i < Rent_Active.Count; i++)
             {
-                if (rentActive[i].Bicycle.ID == bikeID)
+                //if (Rent_Active[i].rentBike(Bike_id) != null)
+                if (Rent_Active[i].Bicycle.ID == Bike_id)
                 {
-                    aa = rentActive[i];
+                    aa = Rent_Active[i];
                     break;
                 }
             }
 
             if (aa == null) { throw new RentNotFoundException(""); }
 
-            BikeStation ostatnia = agregatorStacji.GetStation(stationName);
+            BikeStation ostatnia = agregatorStacji.getStation(Station_name);
 
             if (ostatnia == null) { throw new WrongStationException(""); }
 
@@ -181,11 +188,11 @@ class Program
                     throw new WrongDateFormatException("");
                 }
                 ostatnia.AddBike(aa.Bicycle);
-                aa.SetEndStation(stationName);
-                this.pieniadze = this.pieniadze - aa.SetCost();
-                rentActive.Remove(aa);
+                aa.SetEndStation(Station_name);
+                this.Pieniadze = this.Pieniadze - aa.SetCost(aa.Bicycle);
+                Rent_Active.Remove(aa);
 
-                rentHistory.Add(aa);
+                Rent_History.Add(aa);
             }
             else
             {
@@ -198,79 +205,77 @@ class Program
         {
             if (Value > 0)
             {
-                this.pieniadze += Value;
+                this.Pieniadze += Value;
             }
             else
             {
                 Console.WriteLine("Nieodpowiednia kwota");
             }
         }
-
-        public void DisplayRentActive()
+        public void Display_Rent_Active()
         {
             Console.WriteLine("Aktywne wypożyczenia:");
-            for (int i = 0; i < rentActive.Count; i++)
+            for (int i = 0; i < Rent_Active.Count; i++)
             {
-                Console.WriteLine(rentActive[i].ToString());
+                Console.WriteLine(Rent_Active[i].ToString());
             }
-            if (rentActive.Count == 0) Console.WriteLine("brak");
+            if (Rent_Active.Count == 0) Console.WriteLine("brak");
         }
-
-        public void DisplayRentHistory()
+        public void Display_Rent_History()
         {
 
             Console.WriteLine("Nieaktywne wypożyczenia:");
-            for (int i = 0; i < rentHistory.Count; i++)
+            for (int i = 0; i < Rent_History.Count; i++)
             {
-                Console.WriteLine(rentHistory[i].ToString());
+                Console.WriteLine(Rent_History[i].ToString());
+                Console.WriteLine("Koszt wypożyczenia: "+ (Rent_History[i].Cost).ToString());
             }
-            if (rentHistory.Count == 0) Console.WriteLine("brak");
+            if (Rent_History.Count == 0) Console.WriteLine("brak");
         }
     }
 
-    class UsersManager
+    class Users_Manager
     {
-        private List<User> users;
-        private User currentUser;
-        public UsersManager()
+        private List<User> Users;
+        private User CurrentUser;
+        public Users_Manager()
         {
-            this.users = new List<User>();
-            this.currentUser = null;
+            this.Users = new List<User>();
+            this.CurrentUser = null;
         }
-
-        public void Register(string imie, string nazwisko, string numerTel, string mail, double pieniadze = 0)
+        public void Register(string Imie, string Nazwisko, string Numertel, string Mail, double Pieniadze = 0)
         {
             // Wyjątek - użytkownik już istnieje
-            foreach (User userInst in users)
+            foreach (User userInst in Users)
             {
-                if (userInst.GetImie() == imie && userInst.GetNazwisko() == nazwisko && (userInst.GetNumerTel() == numerTel || userInst.GetMail() == mail))
+                if (userInst.getNumertel() == Numertel || userInst.getMail() == Mail)
                 {
                     throw new DuplicateUserException("");
                 }
             }
             // Wyjątek - numer tel musi mieć 9 liczb
-            if (numerTel.Length != 9) { throw new WrongPhoneNumberException(""); }
+            if (Numertel.Length != 9) { throw new WrongPhoneNumberException(""); }
             // Wyjątek - mail musi zawierać "@"
-            if (mail.Contains("@") != true) { throw new WrongmailException(""); }
+            if (Mail.Contains("@") != true) { throw new WrongMailException(""); }
             // Wyjątek - liczba pieniędzy musi >= 0
-            if (pieniadze < 0) { throw new WrongMoneyException(""); }
+            if (Pieniadze < 0) { throw new WrongMoneyException(""); }
 
-            // Brak wyjątków -> dodanie nowego użytkownika
-            users.Add(new User(imie, nazwisko, numerTel, mail, pieniadze));
+            // Brak wyjątków - dodanie nowego użytkownika
+            Users.Add(new User(Imie, Nazwisko, Numertel, Mail, Pieniadze));
             Console.WriteLine("Rejestracja przebiegła pomyślnie!");
         }
 
-        public void Login(string imie, string nazwisko, string numerTel, string mail)
+        public void Login(string Imie, string Nazwisko, string Numertel, string Mail)
         {
             // Logowanie bez wcześniejszego wylogowania
-            if (currentUser != null) { throw new SessionConflictException(""); }
+            if (CurrentUser != null) { throw new SessionConflictException(""); }
 
-            foreach (User userInst in users)
+            foreach (User userInst in Users)
             {
-                if (userInst.GetImie() == imie && userInst.GetNazwisko() == nazwisko && userInst.GetNumerTel() == numerTel && userInst.GetMail() == mail)
+                if (userInst.getImie() == Imie && userInst.getNazwisko() == Nazwisko && userInst.getNumertel() == Numertel && userInst.getMail() == Mail)
                 {
-                    currentUser = userInst;
-                    Console.WriteLine("Zalogowano jako " + currentUser.GetImie());
+                    CurrentUser = userInst;
+                    Console.WriteLine("Zalogowano jako " + CurrentUser.getImie());
                     return;
                 }
             }
@@ -281,15 +286,15 @@ class Program
         public void Logout()
         {
             // Trzeba być zalogowanym żeby się wylogować
-            if (currentUser == null) { throw new AuthenticationRequiredException(""); }
+            if (CurrentUser == null) { throw new AuthenticationRequiredException(""); }
 
-            currentUser = null;
+            CurrentUser = null;
         }
 
-        public User GetCurrentUser()
+        public User getCurrentUser()
         {
-            if (currentUser == null) { throw new AuthenticationRequiredException(""); }
-            return currentUser;
+            if (CurrentUser == null) { throw new AuthenticationRequiredException(""); }
+            return CurrentUser;
         }
     }
 
@@ -337,22 +342,25 @@ class Program
     // Rower zwykły
     public class RegularBike : Bike
     {
+        const double price = 1;
         // Konstruktor
-        public RegularBike(double price) : base(price) { }
+        public RegularBike() : base(price) { }
     }
 
     // Rower dziecięcy
     public class ChildBike : Bike
     {
+        const double price = 2;
         // Konstruktor
-        public ChildBike(double price) : base(price) { }
+        public ChildBike() : base(price) { }
     }
 
     // Rower tandem
     public class TandemBike : Bike
     {
+        const double price = 3;
         // Konstruktor
-        public TandemBike(double price) : base(price) { }
+        public TandemBike() : base(price) { }
     }
 
 
@@ -367,11 +375,11 @@ class Program
 
         // Metody
         //
-        public BikeStation GetStation(string Name)
+        public BikeStation getStation(string Name)
         {
             for (int i = 0; i < stations.Count; i++)
             {
-                if (stations[i].GetName() == Name)
+                if (stations[i].getName() == Name)
                 {
                     return stations[i];
                 }
@@ -408,7 +416,7 @@ class Program
             foreach (BikeStation station in stations)
             {
                 Console.WriteLine(station.ToString());
-                station.GetStationBikes();
+                station.getStationInfo();
             }
             
         }
@@ -449,12 +457,12 @@ class Program
         }
 
         // Usuwa podany rower ze stacji
-        public Bike RemoveBike(int removedbikeID)
+        public Bike RemoveBike(int removedBike_id)
         {
             int czy_znaleziono = 0;
             for (int i = 0; i < allBikes.Count; i++)
             {
-                if (removedbikeID == allBikes[i].ID)
+                if (removedBike_id == allBikes[i].ID)
                 {
                     Bike nasz = allBikes[i];
                     allBikes.RemoveAt(i);
@@ -521,12 +529,12 @@ class Program
             return tandemBikes;
         }
 
-        public string GetName()
+        public string getName()
         {
             return name;
         }
 
-        public void GetStationBikes()
+        public void getStationInfo()
         {
             Console.WriteLine("Rowery zwykłe:");
             List<Bike> listka = this.GetRegular();
@@ -550,7 +558,6 @@ class Program
             }
             Console.WriteLine();
         }
-
         // Zwraca informacje o stacji rowerowej
         public override string ToString()
         {
@@ -621,12 +628,12 @@ class Program
         // Metody
         //
         // Ustawienie ceny wypożyczenia roweru
-        public double SetCost()
+        public double SetCost(Bike rowerrr)
         {
             TimeSpan span = endTime - startTime;  // Czas od początku do końca wypożyczenia roweru.
             double totalTime = span.TotalMinutes;
             // Cena = cena roweru + czas wypożyczenia, gdzie każda minuta kosztuje 2 grosze
-            cost = (totalTime * 0.02); /*bikePrice +*/
+            cost = (totalTime * 0.02)*rowerrr.Price; /*bikePrice +*/
             return cost;
         }
 
@@ -662,25 +669,30 @@ class Program
     static void Main(string[] args)
     {
         // Przykładowe rowery
-        RegularBike rower1 = new RegularBike(20);
-        RegularBike rower2 = new RegularBike(20);
-        ChildBike crower1 = new ChildBike(20);
-        ChildBike crower2 = new ChildBike(20);
-        ChildBike crower3 = new ChildBike(20);
+        RegularBike rower1 = new RegularBike();
+        RegularBike rower2 = new RegularBike();
+        ChildBike crower1 = new ChildBike();
+        ChildBike crower2 = new ChildBike();
+        ChildBike crower3 = new ChildBike();
+        TandemBike trower1 = new TandemBike();
 
         // Stacja rowerowa
         BikeStation stacja = new BikeStation("Stacja1", 7);
+        BikeStation stacja2 = new BikeStation("Stacja2", 14);
         stacja.AddBike(rower1);
         stacja.AddBike(rower2);
         stacja.AddBike(crower1);
         stacja.AddBike(crower2);
         stacja.AddBike(crower3);
+        stacja.AddBike(trower1);
 
         agregatorStacji = new StationsAggregation();
         agregatorStacji.AddStation(stacja);
+        agregatorStacji.AddStation(stacja2);
+        agregatorStacji.GetStationsInfo();
 
-        UsersManager manago = new UsersManager();
-        // Przykładowy użytkownik
+        Users_Manager manago = new Users_Manager();
+        // Przykładowy użytkownika
         manago.Register("a", "a", "123123123", "a@a", 100000);
 
         string im, na, nr, ma, input, nazwa_stacji, czass;
@@ -693,7 +705,7 @@ class Program
         {
             Console.WriteLine("\nWybierz operację:");
             Console.WriteLine("1: Zaloguj się\n2: Wyloguj się\n3: Zarejestruj się\n4: Wypożycz rower\n5: Historia wypożyczeń użytkownika\n" +
-                "6: Lista wypożyczalni rowerów\n7: Lista rowerów w danej wypożyczalni\n8: Zwróć rower \n9: Dodaj pieniądze na konto\n10: Aktywne wypożyczenia\n11: Zakończ program");
+                "6: Lista wypożyczalni rowerów\n7: Lista rowerów w danej wypożyczalni\n8: Zwróć rower \n9: Dodaj pieniądze na konto\n10: Aktywne wypożyczenia\n11: Liczba środków na koncie\n12: Zakończ program");
 
             string command = Console.ReadLine();
 
@@ -729,6 +741,7 @@ class Program
 
                     try
                     {
+                        Console.WriteLine("Wylogowano");
                         manago.Logout();
                     }
                     catch (AuthenticationRequiredException ex)
@@ -749,11 +762,10 @@ class Program
                     ma = Console.ReadLine();
                     Console.WriteLine("Jeśli chcesz, podaj sumę, którą chcesz wpłacić");
                     input = Console.ReadLine();
-                    if (double.TryParse(input, out cash)) { }
+                    if (double.TryParse(input, out cash)) { input = input; }
                     else
                     {
-                        Console.WriteLine("Błędny format liczby!");
-                        break;
+                        Console.WriteLine("Nie wpłacono środków");
                     }
 
                     try
@@ -764,7 +776,7 @@ class Program
                     {
                         Console.WriteLine(ex.Message);
                     }
-                    catch (WrongmailException ex)
+                    catch (WrongMailException ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -782,7 +794,7 @@ class Program
                 case "4":  // Wypożycz rower
                     Console.WriteLine("Podaj nr ID roweru");
                     input = Console.ReadLine();
-                    if (int.TryParse(input, out idd)) { }
+                    if (int.TryParse(input, out idd)) { input = input; }
                     else
                     {
                         Console.WriteLine("Błędnie wpisany numer ID");
@@ -797,11 +809,12 @@ class Program
 
                     try
                     {
-                        currentt = manago.GetCurrentUser();
+                        currentt = manago.getCurrentUser();
                     }
                     catch (AuthenticationRequiredException ex)
                     {
                         Console.WriteLine(ex.Message);
+                        break;
                     }
                     
 
@@ -834,13 +847,14 @@ class Program
 
                     try
                     {
-                        currentt = manago.GetCurrentUser();
-                        currentt.DisplayRentHistory();
+                        currentt = manago.getCurrentUser();
                     }
                     catch (AuthenticationRequiredException ex)
                     {
                         Console.WriteLine(ex.Message);
+                        break;
                     }
+                    currentt.Display_Rent_History();
                     
                     
 
@@ -853,11 +867,11 @@ class Program
                 case "7":  // Lista rowerów dostępnych w wypożyczalni
                     Console.WriteLine("Podaj nazwę wypożyczalni rowerów");
                     input = Console.ReadLine();
-                    BikeStation bikestacja = agregatorStacji.GetStation(input);
+                    BikeStation bikestacja = agregatorStacji.getStation(input);
                     if (bikestacja != null)
                     {
                         Console.WriteLine(bikestacja.ToString());
-                        bikestacja.GetStationBikes();
+                        bikestacja.getStationInfo();
                     }
                     else
                     {
@@ -870,7 +884,7 @@ class Program
                     input = Console.ReadLine();
                     if (int.TryParse(input, out idd))
                     {
-
+                        input = input;
                     }
                     else
                     {
@@ -885,7 +899,7 @@ class Program
 
                     try
                     {
-                        currentt = manago.GetCurrentUser();
+                        currentt = manago.getCurrentUser();
                     }
                     catch (AuthenticationRequiredException ex)
                     {
@@ -895,7 +909,7 @@ class Program
 
                     try
                     {
-                        currentt.ReturnBike(idd, nazwa_stacji, czass);
+                        currentt.Return_Bike(idd, nazwa_stacji, czass);
                     }
                     catch (NotEnoughFreeSpaceException ex)
                     {
@@ -919,18 +933,19 @@ class Program
                 case "9": // Dodaj pieniadze na konto
                     try
                     {
-                        currentt = manago.GetCurrentUser();
+                        currentt = manago.getCurrentUser();
                     }
                     catch (AuthenticationRequiredException ex)
                     {
                         Console.WriteLine(ex.Message);
+                        break;
                     }
 
                     Console.WriteLine("Podaj kwotę");
                     input = Console.ReadLine();
                     if (double.TryParse(input, out cash))
                     {
-
+                        input = input;
                     }
                     else
                     {
@@ -943,16 +958,31 @@ class Program
                 case "10": // Aktywne wypożyczenia użytkownika
                     try
                     {
-                        currentt = manago.GetCurrentUser();
+                        currentt = manago.getCurrentUser();
                     }
                     catch (AuthenticationRequiredException ex)
                     {
                         Console.WriteLine(ex.Message);
+                        break;
                     }
-                    currentt.DisplayRentActive();
+                    currentt.Display_Rent_Active();
+                    break;
+                
+                case "11": //ile pieniedzy
+                    try
+                    {
+                        currentt = manago.getCurrentUser();
+                    }
+                    catch (AuthenticationRequiredException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        break;
+                    }
+                    Console.WriteLine("Masz na koncie:");
+                    Console.WriteLine(currentt.getPieniadze());
                     break;
 
-                case "11":  // Koniec programu
+                case "12":  // Koniec programu
                     return;
 
                 default:
