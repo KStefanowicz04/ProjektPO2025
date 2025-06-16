@@ -741,8 +741,8 @@ class Program
 
                     try
                     {
-                        Console.WriteLine("Wylogowano");
                         manago.Logout();
+                        Console.WriteLine("Wylogowano");
                     }
                     catch (AuthenticationRequiredException ex)
                     {
