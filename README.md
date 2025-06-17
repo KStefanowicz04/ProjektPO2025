@@ -3,44 +3,47 @@
 ## Używanie programu
 
 Po uruchomieniu programu wyświetli się menu główne z następującymi opcjami:
-* Zaloguj się:<br>
+* 1 - Zaloguj się:<br>
   Aby wykonać tę operację należy kliknąć 1 oraz enter.<br>
   Aby zalogować się na konto, należy w kolejnych liniach podać imię, nazwisko, numer telefonu oraz adres e-mail.<br>
   Aby zalogować się na konto, należy najpierw się zarejestrować.
-* Wyloguj się:<br>
+* 2 - Wyloguj się:<br>
   Aby wykonać tę operację należy kliknąć 2 oraz enter.<br>
   Aby wylogować się z konta, należy być na nie zalogowany.<br>
-* Zarejestruj się:<br>
+* 3 - Zarejestruj się:<br>
   Aby wykonać tę operację należy kliknąć 3 oraz enter.
   Aby zarejestrować konto, należy w kolejnych liniach podać imię, nazwisko, numer telefonu oraz adres e-mail.<br>
   Numer telefonu powinien składać się z 9 znaków.<br>
   Adres e-mail powinien zawierać znak '@'.<br>
   W ostatniej linii można również wpłacić pieniądze na konto już podczas rejestracji - należy podać kwotę w formacie zz.gg gdzie zz oznacza złote a gg grosze, którą chce się zasilić konto. Na koniec należy kliknąć enter.<br>
   Każda osoba może posiadać kilka kont, lecz każde konto powinno zostać zarejestrowane przy użyciu innego adresu e-mail oraz innego numeru telefonu.<br>
-* Wypożycz rower:<br>
+* 4 - Wypożycz rower:<br>
   Aby wykonać tę operację należy kliknąć 4 oraz enter.<br>
   Aby wypożyczyć rower, zalogowany użytkownik powinien w kolejnych liniach podać numer ID roweru, nazwę stacji początkowej wypożyczenia oraz datę i godzinę wypożyczenia w formacie DateTime, tj. w formacie MM/DD/YYYY/ hh:mm:ss, gdzie MM oznacza miesiąc, DD dzień, YYYY rok, hh godzinę, mm minutę, a  ss sekundę. 
   Nazwy stacji oraz numery ID rowerów można odnaleźć korzystając z opcji Lista wypożyczlani rowerów lub Lista rowerów  w danej wypożyczalni.
-* Historia wypożyczeń użytkownika:<br>
+* 5 - Historia wypożyczeń użytkownika:<br>
   Aby wykonać tę operację należy kliknąć 5 oraz enter.<br>
   Zalogowany użytkownik uzyska informacje o historii zakończonych wypożyczeń - stacji początkowej i stacji końcowej, czasie wypożyczenia oraz ID roweru.<br>
-* Lista wypożyczalni rowerów:<br>
+* 6 - Lista wypożyczalni rowerów:<br>
   Aby wykonać tę operację należy kliknąć 6 oraz enter.<br>
   Uzyskujemy informacje o nazwach stacji rowerowych, liczbie miejsc na rowery na stacjach, liczbie miejsc wolnych na rowery na stacjach oraz ID rowerów i typy rowerów znajdujących się na stacjach.<br>
-* Lista rowerów w danej wypożyczalni:<br>
+* 7 - Lista rowerów w danej wypożyczalni:<br>
   Aby wykonać tę operację należy kliknąć 7 oraz enter.<br>
   Uzyskujemy informacje o nazwie stacji rowerowej, liczbie miejsc na rowery na stacji, liczbie miejsc wolnych na rowery na stacji oraz ID rowerów i typy rowerów znajdujących się na stacji.<br>
-* Zwróć rower:<br>
+* 8 - Zwróć rower:<br>
   Aby wykonać tę operację należy kliknąć 8 oraz enter.<br>
   Aby zwrócić rower, zalogowany użytkownik powinien w kolejnych liniach podać numer ID roweru, nazwę stacji końcowej wypożyczenia oraz datę i godzinę końca wypożyczenia w formacie DateTime tj. w formacie MM/DD/YYYY/ hh:mm:ss, gdzie MM oznacza miesiąc, DD dzień, YYYY rok, hh godzinę, mm minutę, a ss sekundę.<br>
-* Dodaj pieniądze na konto:<br>
+* 9 - Dodaj pieniądze na konto:<br>
   Aby wykonać tę operację należy kliknąć 9 oraz enter.<br>
   Zalogowany użytkownik podaje kwotę w formacie zz.gg gdzie zz oznacza złote a gg grosze, którą chce zasilić konto. Na koniec należy kliknąć enter.<br>
-* Aktywne wypożyczenia:<br>
+* 10 - Aktywne wypożyczenia użytkownika:<br>
   Aby wykonać tę operację należy kliknąć 10 oraz enter.<br>
   Klikając 10 oraz enter zalogowany użytkownik uzyska informacje o aktwynych wypożyczeń - stacji początkowej, czasie wypożyczenia oraz ID roweru.<br>
-* Zakończ program:<br>
+* 11 - Ilość środków na koncie:<br>
   Aby wykonać tę operację należy kliknąć 11 oraz enter.<br>
+  Wypisuje ilość pieniędzy na koncie danego użytkownika do konsoli.<br>
+* 12 - Zakończ program:<br>
+  Aby wykonać tę operację należy kliknąć 12 oraz enter.<br>
   Operacja ta zatrzymuje działanie programu.<br>
 
 

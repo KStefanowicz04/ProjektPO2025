@@ -689,10 +689,10 @@ class Program
         agregatorStacji = new StationsAggregation();
         agregatorStacji.AddStation(stacja);
         agregatorStacji.AddStation(stacja2);
-        agregatorStacji.GetStationsInfo();
+        //agregatorStacji.GetStationsInfo();
 
         UsersManager manago = new UsersManager();
-        // Przykładowy użytkownika
+        // Przykładowy użytkownik
         manago.Register("a", "a", "123123123", "a@a", 100000);
 
         string im, na, nr, ma, input, nazwa_stacji, czass;
@@ -705,7 +705,8 @@ class Program
         {
             Console.WriteLine("\nWybierz operację:");
             Console.WriteLine("1: Zaloguj się\n2: Wyloguj się\n3: Zarejestruj się\n4: Wypożycz rower\n5: Historia wypożyczeń użytkownika\n" +
-                "6: Lista wypożyczalni rowerów\n7: Lista rowerów w danej wypożyczalni\n8: Zwróć rower \n9: Dodaj pieniądze na konto\n10: Aktywne wypożyczenia\n11: Liczba środków na koncie\n12: Zakończ program");
+                "6: Lista wypożyczalni rowerów\n7: Lista rowerów w danej wypożyczalni\n8: Zwróć rower \n9: Dodaj pieniądze na konto\n" +
+                "10: Aktywne wypożyczenia\n11: Ilość środków na koncie\n12: Zakończ program");
 
             string command = Console.ReadLine();
 
@@ -968,7 +969,7 @@ class Program
                     currentt.DisplayRentActive();
                     break;
                 
-                case "11": //ile pieniedzy
+                case "11": // Ilość pieniędzy na koncie
                     try
                     {
                         currentt = manago.GetCurrentUser();
